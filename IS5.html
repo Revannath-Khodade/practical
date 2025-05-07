@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffie-Hellman Key Exchange</title>
+</head>
+<body>
+    <h2> Diffie-Hellman Key Exchange</h2>
+    <hr>
+    <p>Welcome, Alice! Below is the Diffie-Hellman Key Exchange simulation between you and Bob.</p>
+
+    <label for="privateKey">Enter your private key (Alice): </label>
+    <input type="number" id="privateKey" value="6"><br><br>
+
+    <button onclick="startExchange()">Start Key Exchange</button>
+
+    <p id="result"></p>
+
+    <script>
+        
+        function power(base, exp, mod) {
+            let result = 1;
+            base = base % mod;
+            while (exp > 0) {
+                if (exp % 2 === 1) {
+                    result = (result * base) % mod;
+                }
+                exp = Math.floor(exp / 2);
+                base = (base * base) % mod;
+            }
+            return result;
+        }
+
+       
+        const P = 23;  
+        const G = 9;   
+        const b = 15;  
+
+        
+        const y = power(G, b, P);
+
+        function startExchange() {
+            const a = parseInt(document.getElementById('privateKey').value);
+
+           
+            const x = power(G, a, P);
+
+            
+            const ka = power(y, a, P); 
+            const kb = power(x, b, P); 
+
+            
+            document.getElementById("result").innerHTML = `
+                <strong>Diffie-Hellman Key Exchange Details:</strong><br><br>
+                Prime number P: ${P}<br>
+                Primitive root G: ${G}<br><br>
+                Alice's private key: ${a}<br>
+                Alice's public key: ${x}<br><br>
+                Bob's private key (simulated): ${b}<br>
+                Bob's public key: ${y}<br><br>
+                Alice's shared secret key: ${ka}<br>
+                Bob's shared secret key: ${kb}<br><br>
+                <strong>Shared Secret Key (should match): ${ka}</strong>
+            `;
+        }
+    </script>
+</body>
+</html>
